@@ -4,34 +4,28 @@ class Solution(object):
         :type s: str
         :rtype: str
         """
-        if not s:
-            return ""
+        if len(s) < 2:
+            return s
 
-        n = len(s)
-        # Initialize a table to store whether substrings are palindromes
-        dp = [[False] * n for _ in range(n)]
+        max_len = 0
+        start = 0
 
-        start, max_len = 0, 1
+        for i in range(len(s)):
+            # Check for odd-length palindromes with s[i] as center
+            len1 = self.expand_around_center(s, i, i)
+            # Check for even-length palindromes with s[i] and s[i+1] as center
+            len2 = self.expand_around_center(s, i, i + 1)
 
-        # All substrings of length 1 are palindromes
-        for i in range(n):
-            dp[i][i] = True
-
-        # Check substrings of length 2
-        for i in range(n - 1):
-            if s[i] == s[i + 1]:
-                dp[i][i + 1] = True
-                start = i
-                max_len = 2
-
-        # Check substrings of length > 2
-        for length in range(3, n + 1):
-            for i in range(n - length + 1):
-                j = i + length - 1
-                if s[i] == s[j] and dp[i + 1][j - 1]:
-                    dp[i][j] = True
-                    if length > max_len:
-                        start = i
-                        max_len = length
+            # Update max_len and start index if a longer palindrome is found
+            curr_len = max(len1, len2)
+            if curr_len > max_len:
+                max_len = curr_len
+                start = i - (curr_len - 1) // 2
 
         return s[start:start + max_len]
+
+    def expand_around_center(self, s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return right - left - 1
