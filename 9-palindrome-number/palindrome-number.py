@@ -4,19 +4,16 @@ class Solution(object):
         :type x: int
         :rtype: bool
         """
-        # Convert to string and compare with its reverse
-        # return str(x) == str(x)[::-1]
-
-        # Reverse the integer and compare with the original
+        # Handle negative numbers and numbers ending with 0 (except 0 itself)
         if x < 0 or (x % 10 == 0 and x != 0):
             return False
 
         reversed_num = 0
-        original_x = x
 
-        while x > 0:
-            digit = x % 10
-            reversed_num = reversed_num * 10 + digit
+        # Reverse half of the integer
+        while x > reversed_num:
+            reversed_num = reversed_num * 10 + x % 10
             x //= 10
 
-        return reversed_num == original_x
+        # If the number of digits is odd, remove the middle digit from reversed_num
+        return x == reversed_num or x == reversed_num // 10
