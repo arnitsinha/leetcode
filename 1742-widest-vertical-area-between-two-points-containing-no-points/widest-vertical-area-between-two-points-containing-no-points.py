@@ -4,12 +4,12 @@ class Solution(object):
         :type points: List[List[int]]
         :rtype: int
         """
-        # Sort the points based on their x-coordinate
-        points.sort(key=lambda x: x[0])
+        # Extract x-coordinates from the points
+        x_coords = sorted(x[0] for x in points)
         
         max_width = 0
-        # Iterate through the sorted points to find the maximum width
-        for i in range(1, len(points)):
-            max_width = max(max_width, points[i][0] - points[i-1][0])
+        # Iterate through the sorted x-coordinates to find the maximum width
+        for i in range(1, len(x_coords)):
+            max_width = max(max_width, x_coords[i] - x_coords[i-1])
         
         return max_width
