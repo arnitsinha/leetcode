@@ -5,4 +5,4 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
-        return sum(h >= target for h in hours)
+        return sum(1 for h in hours if h >= target)
